@@ -1,5 +1,8 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+html
+  head
+    title= title
+    script(src="index.js")
+    script(src="./scripts/index.js")
+    script alert("dsa")
+  body
+    h1= message

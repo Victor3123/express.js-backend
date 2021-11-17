@@ -8,6 +8,8 @@ const cors = require('cors');
 let config = require('./config');
 
 const authRouter = require('./routes/auth')
+const productRouter = require('./routes/products')
+const admHomeRouter = require('./routes/admin/home')
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRouter);
+app.use('/products', productRouter);
+app.use('/admin/', admHomeRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
