@@ -9,7 +9,11 @@ const {body, validationResult, check} = require('express-validator');
 /* GET users listing. */
 router.post('/login', async function ({body: {email, password}}, res, next) {
     console.log(email, password);
-
+    if (_.isEmpty(email || _.isEmpty(password))) {
+        return res.status(300).json({
+            message: "Lines cannot be empty!",
+        });
+    }
     db.get('SELECT * FROM users WHERE email = ?', email, async (err, row) => {
         console.log(row);
         if (!_.isUndefined(row) && await bcrypt.compare(password, row.password)) {
@@ -30,6 +34,15 @@ router.post(
     body('passwordConfirmation').exists().custom((value, {req}) => value !== req.body.password),
 
     async function ({body: {email, name, password, passwordConfirmation}}, res, next) {
+        if (_.isEmpty(email || _.isEmpty(password) || _.isEmpty(passwordConfirmation))) {
+            return res.status(300).json({
+                message: "Lines cannot be empty!",
+            });
+        } else if ( password !== passwordConfirmation ) {
+            return res.status(300).json({
+                message: "Password lines is diff...!",
+            });
+        }
         const errors = validationResult(res);
         if(!errors.isEmpty()) {
             return res.status(300).json({
